@@ -4,14 +4,11 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/users.module';
 import { TodoModule } from './modules/todos.module';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      process.env.MONGODB_URL,
+      'mongodb+srv://RealKRipper:khanhpro0303@test.ivtlqlf.mongodb.net/',
     ),
     UserModule,
     TodoModule
