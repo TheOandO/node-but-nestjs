@@ -21,12 +21,12 @@ export class TodoController {
     };
 
     @Get(':id')
-    findOne(@Param(':id') id: string) {
+    findOne(@Param('id') id: string) {
         return this.todoService.findOne(id);
     };
 
     @Put(':id')
-    update(@Param(':id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
+    update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
         return this.todoService.update(id, updateTodoDto);
     };
 

@@ -1,19 +1,14 @@
-import { Injectable, NestMiddleware } from '@nestjs/common'
 import { Request, Response, NextFunction } from 'express';
 
-@Injectable()
-export class catchAsync implements NestMiddleware {
-    use(req: Request, res: Response, next: NextFunction) {
-        const fn = (req, res, next) => {
-            return Promise.resolve()
-            .then(() => {
-                fn(req, res, next);
-            })
-            .catch(err => {
-                next(err);
-            });
-        };
-
-        return fn(req, res, next);
-    };
+export function catchAsync(
+    req: Request,
+    res: Response,
+    next: NextFunction
+    ) {
+    // Wrap the asynchronous function using a try-catch block
+    try {
+        next(); // Call `next` to continue to the next middleware
+    } catch (error) {
+        next(error); // Pass any errors to the global error handler
+    }
 }

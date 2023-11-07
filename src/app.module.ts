@@ -8,7 +8,7 @@ import { TodoModule } from './modules/todos.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://name:pass@test.ivtlqlf.mongodb.net/',
+      'mongodb+srv://RealKRipper:khanhpro0303@test.ivtlqlf.mongodb.net/',
     ),
     UserModule,
     TodoModule

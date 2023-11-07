@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type TodoDocument = Todo & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Todo {
     @Prop({ required: true })
     title: string;
