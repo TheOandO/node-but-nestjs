@@ -6,7 +6,7 @@ export class User {
   @MinLength(5)
   username: string;
 
-  @Min(5)
+  @MinLength(5)
   @IsString()
   @IsNotEmpty()
   password: string;

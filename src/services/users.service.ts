@@ -29,11 +29,19 @@ export class UserService {
     };
 
     async findAll(): Promise<UserDocument[]> {
-        return this.userModel.find().exec();
+        const user = await this.userModel.find().exec();
+        if (!user) {
+            throw new Error('No user')
+        }
+        return user;
     };
 
     async findOne(id: string): Promise<UserDocument> {
-        return this.userModel.findById(id);
+        const user = await this.userModel.findById(id);
+        if (!user) {
+            throw new Error('User not found')
+        }
+        return user;
     };
 
     async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDocument> {

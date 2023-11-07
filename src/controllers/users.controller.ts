@@ -27,7 +27,6 @@ export class UserController {
     };
 
     @Put(':id')
-    @UsePipes(new JoiValidationPipe(createUserSchema))
     update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto);
     };
