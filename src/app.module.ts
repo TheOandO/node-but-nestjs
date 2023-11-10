@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/users.module';
 import { TodoModule } from './modules/todos.module';
 import { AuthModule } from './modules/auth.module';
-import dotenv from 'dotenv';
 
 @Module({
   imports: [
