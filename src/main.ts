@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from "dotenv";
 
 async function bootstrap() {
+  dotenv.config()
   const app = await NestFactory.create(AppModule)
 
   //Middleware
@@ -13,5 +14,5 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
-dotenv.config()
+
 bootstrap();
