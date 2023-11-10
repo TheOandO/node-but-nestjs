@@ -5,12 +5,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/users.module';
 import { TodoModule } from './modules/todos.module';
 import { AuthModule } from './modules/auth.module';
+import { ConfigModule, ConfigService} from '@nestjs/config'
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      process.env.MONGODB_URI,
-    ),
+      MongooseModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (config: ConfigService) => ({
+          uri: config.get<string>('MONGODB_URI'), // Loaded from .ENV
+        })
+      }),
     UserModule,
     TodoModule,
     AuthModule
