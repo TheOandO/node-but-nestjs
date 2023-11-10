@@ -4,7 +4,6 @@ import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { JoiValidationPipe } from '../pipes/joi-validation.pipe';
 import { createUserSchema } from '../schemas/joi-schema';
-import { catchAsync } from 'src/middleware/catchAsync';
 
 @Controller('users')
 export class UserController {

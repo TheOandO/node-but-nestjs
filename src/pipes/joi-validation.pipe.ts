@@ -1,4 +1,3 @@
-// joi-validation.pipe.ts
 import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
 import * as Joi from 'joi';
 

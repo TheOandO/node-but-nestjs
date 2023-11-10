@@ -10,7 +10,12 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
     constructor(@InjectModel(User.name) private readonly userModel: Model <UserDocument>) {}
 
-    async create(createUserDto: CreateUserDto): Promise<UserDocument> {
+    /**
+     * Create user
+     * @param createUserDto 
+     * @returns {Object} user 
+     */
+    async create(createUserDto: CreateUserDto){
         const { username, password, email } = createUserDto
 
         try {
@@ -28,7 +33,11 @@ export class UserService {
         }
     };
 
-    async findAll(): Promise<UserDocument[]> {
+    /**
+     * Find all user
+     * @returns {Object} user
+     */
+    async findAll() {
         const user = await this.userModel.find().exec();
         if (!user) {
             throw new Error('No user')
@@ -36,7 +45,12 @@ export class UserService {
         return user;
     };
 
-    async findOne(id: string): Promise<UserDocument> {
+    /**
+     * Find user by id
+     * @param {Object} id 
+     * @returns {Object} user
+     */
+    async findOne(id: string) {
         const user = await this.userModel.findById(id);
         if (!user) {
             throw new Error('User not found')
@@ -44,7 +58,13 @@ export class UserService {
         return user;
     };
 
-    async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDocument> {
+    /**
+     * Update a user
+     * @param {Object} id 
+     * @param updateUserDto 
+     * @returns {Object} user
+     */
+    async update(id: string, updateUserDto: UpdateUserDto) {
         const { username, password, email } = updateUserDto
 
         if (password) {
@@ -55,7 +75,20 @@ export class UserService {
         return this.userModel.findByIdAndUpdate(id, updateUserDto);
     };
 
+    /**
+     * Delete a user
+     * @param {Object} id 
+     * @returns {Object} user 
+     */
     async remove(id: string) {
         return this.userModel.findByIdAndDelete(id);
     };
+
+    async findByUsername(username: string){
+        const user = await this.userModel.findOne({ username}).exec();
+        if (!user) {
+            throw new Error('User not found')
+        }
+        return user;
+    }
 };
