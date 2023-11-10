@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,9 +16,9 @@ import { ConfigModule, ConfigService} from '@nestjs/config'
           uri: config.get<string>('MONGODB_URI'), // Loaded from .ENV
         })
       }),
-    UserModule,
+    forwardRef(() => UserModule) ,
     TodoModule,
-    AuthModule
+    forwardRef(() => AuthModule) ,
   ],
   controllers: [AppController],
   providers: [AppService],
