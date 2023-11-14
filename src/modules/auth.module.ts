@@ -6,7 +6,6 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JsonWebTokenStrategy } from '../strategies/jwt.strategy';
 import { LocalStrategy } from 'src/strategies/local.strategy';
-import { UserService } from 'src/services/users.service';
 
 @Module({
     imports: [
