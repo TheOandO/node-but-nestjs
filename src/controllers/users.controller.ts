@@ -23,10 +23,10 @@ export class UserController {
         return this.userService.findAll();
     };
 
-    @Get(':username')
+    @Get(':id')
     @UseGuards(JwtAuthGuard)
-    findOne(@Param('username') username: string) {
-        return this.userService.findByUsername(username);
+    findOne(@Param('id') id: string) {
+        return this.userService.findOne(id);
     };
 
     @Put(':id')

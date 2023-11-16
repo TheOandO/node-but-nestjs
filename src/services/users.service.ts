@@ -5,7 +5,6 @@ import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { User, UserDocument } from '../schemas/users.schema';
 import * as bcrypt from 'bcrypt';
-import { TodoSchema } from 'src/schemas/todos.schema';
 
 @Injectable()
 export class UserService {
@@ -52,7 +51,7 @@ export class UserService {
      * @returns {Object} user
      */
     async findOne(id: string) {
-        const user = await this.userModel.findById(id).populate('todos').exec();
+        const user = await this.userModel.findById(id);
         if (!user) {
             throw new Error('User not found')
         }
@@ -86,7 +85,7 @@ export class UserService {
     };
 
     async findByUsername(username: string){
-        const user = await this.userModel.findOne({ username }).populate('todos').exec();
+        const user = await this.userModel.findOne({ username}).exec();
         if (!user) {
             throw new Error('User not found')
         }

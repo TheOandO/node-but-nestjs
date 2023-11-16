@@ -13,9 +13,6 @@ export class Todo {
 
     @Prop({ default: false })
     completed: boolean;
-
-    @Prop({ type: String, ref: 'User', required: true })
-    username: string;
 }
 
 export const TodoSchema = SchemaFactory.createForClass(Todo);
