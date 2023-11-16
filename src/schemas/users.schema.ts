@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as bcrypt from "bcrypt"
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Todo } from './todos.schema';
 
 export type UserDocument = User & Document;
 
@@ -14,6 +14,9 @@ export class User {
 
     @Prop()
     email: string;
+
+    @Prop({ type: ({ type: MongooseSchema.Types.ObjectId, ref: 'todos' }) })
+    todos: Todo[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
