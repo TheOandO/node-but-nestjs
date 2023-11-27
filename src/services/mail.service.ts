@@ -53,7 +53,7 @@ export class MailService {
             .sendMail({
                 transporterName: 'gmail',
                 to: 'dummy-reciever@gmail.com',
-                from: 'noreply@nestjs.com', // sender address
+                from: this.configService.get('EMAIL'), // sender address
                 subject: 'Verfication Code', // Subject line
                 context: {
                     code: getRndInteger(111111, 999999)
@@ -73,7 +73,7 @@ export class MailService {
         
         const mailOptions = {
             transporterName: 'gmail',
-            from: 'noreply@nestjs.com',
+            from: this.configService.get('EMAIL'),
             to,
             subject: 'Welkum',
             context,
@@ -94,7 +94,7 @@ export class MailService {
         
         const mailOptions = {
             transporterName: 'gmail',
-            from: 'noreply@nestjs.com',
+            from: this.configService.get('EMAIL'),
             to,
             subject: 'Your info has been updated',
             context,
@@ -115,7 +115,7 @@ export class MailService {
         
         const mailOptions = {
             transporterName: 'gmail',
-            from: 'noreply@nestjs.com',
+            from: this.configService.get('EMAIL'),
             to,
             subject: 'Your email has been deleted',
             context,
