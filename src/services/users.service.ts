@@ -5,12 +5,10 @@ import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { User, UserDocument } from '../schemas/users.schema';
 import * as bcrypt from 'bcrypt';
-import { MailService } from './mail.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private readonly userModel: Model <UserDocument>,
-    private readonly mailService:MailService) {}
+    constructor(@InjectModel(User.name) private readonly userModel: Model <UserDocument>) {}
 
     /**
      * Create user
