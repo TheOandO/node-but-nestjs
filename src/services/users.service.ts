@@ -26,10 +26,6 @@ export class UserService {
 
             const user = new this.userModel({ username, email, password: hashdPass });
 
-            const context = { // ✏️ filling curly brackets with content
-                name: user.username,
-            }
-            this.mailService.sendMailWelcomeUser(user.email, context)
             return user.save();
         } catch (error) {
             // Check for unique username constraint error
@@ -91,7 +87,7 @@ export class UserService {
     };
 
     async findByUsername(username: string){
-        const user = await this.userModel.findOne({ username}).exec();
+        const user = await this.userModel.findOne({ username }).exec();
         if (!user) {
             throw new Error('User not found')
         }
