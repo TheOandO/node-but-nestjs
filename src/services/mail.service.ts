@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
 import { google } from 'googleapis';
 import { Options } from 'nodemailer/lib/smtp-transport';
+
 @Injectable()
 export class MailService {
     constructor(
@@ -71,15 +72,16 @@ export class MailService {
             });
     }
 
-    public async sendMail(to:string, subject:string, template:string) {
+    public async sendMailWelcomeUser(to:string, context:any) {
         await this.setTransport();
         
         const mailOptions = {
             transporterName: 'gmail',
             from: 'noreply@nestjs.com',
             to,
-            subject,
-            template
+            subject: 'Welkum',
+            context,
+            template: './confirmation'
         }
 
         this.mailerService.sendMail(mailOptions)

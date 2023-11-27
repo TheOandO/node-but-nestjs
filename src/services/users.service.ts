@@ -26,10 +26,10 @@ export class UserService {
 
             const user = new this.userModel({ username, email, password: hashdPass });
 
-            const to = user.email
-            const subject = 'Welkum'
-            const template = './confirmation'
-            this.mailService.sendMail(to, subject, template)
+            const context = { // ✏️ filling curly brackets with content
+                name: user.username,
+            }
+            this.mailService.sendMailWelcomeUser(user.email, context)
             return user.save();
         } catch (error) {
             // Check for unique username constraint error

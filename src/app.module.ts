@@ -27,18 +27,20 @@ import { join } from 'path';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MailerModule.forRoot({
-      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-      defaults: {
-        from: '"No Reply" <no-reply@gmail.com>',
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new EjsAdapter(), // or new PugAdapter() or new EjsAdapter()
-        options: {
-          strict: true,
+    MailerModule.forRootAsync({
+      useFactory: async (config: ConfigService) => ({
+        transport: `${config.get('TRANSPORT')}`,
+        defaults: {
+          from: `"No Reply" <${config.get('EMAIL')}>`,
         },
-      },
+        template: {
+          dir: join(__dirname, './templates'),
+          adapter: new EjsAdapter(), // or new PugAdapter() or new EjsAdapter()
+          options: {
+            strict: true,
+          },
+        },
+      })
     }),
   ],
   controllers: [AppController],
