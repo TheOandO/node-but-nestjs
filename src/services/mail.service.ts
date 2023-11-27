@@ -44,7 +44,7 @@ export class MailService {
         this.mailerService.addTransporter('gmail', config);
     }
 
-    public async sendMailCode() {
+    public async sendMailConfirm() {
         function getRndInteger(min:number, max:number) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
@@ -55,14 +55,10 @@ export class MailService {
                 to: 'dummy-reciever@gmail.com',
                 from: 'noreply@nestjs.com', // sender address
                 subject: 'Verfication Code', // Subject line
-                html: `<html>
-                            <head>
-                                <title>Verification Code</title>
-                            </head>
-                            <body>
-                                <h3>Your verification code is ${getRndInteger(111111, 999999)}</h3>
-                            </body>
-                        </html>`
+                context: {
+                    code: getRndInteger(111111, 999999)
+                },
+                template: './confirmation'
             })
             .then((success) => {
                 console.log(success);
