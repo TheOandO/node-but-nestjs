@@ -6,6 +6,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { LocalStrategy } from "src/strategies/local.strategy";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "./auth.module";
+import { MailModule } from "./mail.module";
+import { MailService } from "src/services/mail.service";
 
 @Module({
     imports: [
@@ -17,10 +19,11 @@ import { AuthModule } from "./auth.module";
             secret: process.env.JWT_SECRET,
             signOptions: { expiresIn: '60m' },
             }),
-        forwardRef(() => AuthModule)
+        forwardRef(() => AuthModule),
+        MailModule
     ],
     controllers: [UserController],
-    providers: [UserService, LocalStrategy],
+    providers: [UserService, LocalStrategy, MailService],
     exports: [UserService]
 })
 

@@ -5,10 +5,12 @@ import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { User, UserDocument } from '../schemas/users.schema';
 import * as bcrypt from 'bcrypt';
+import { MailService } from './mail.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private readonly userModel: Model <UserDocument>) {}
+    constructor(@InjectModel(User.name) private readonly userModel: Model <UserDocument>,
+    private readonly mailService:MailService) {}
 
     /**
      * Create user
@@ -23,6 +25,11 @@ export class UserService {
             const hashdPass = await bcrypt.hash(password, 10);
 
             const user = new this.userModel({ username, email, password: hashdPass });
+
+            const to = user.email
+            const subject = 'Welkum'
+            const template = './confirmation'
+            this.mailService.sendMail(to, subject, template)
             return user.save();
         } catch (error) {
             // Check for unique username constraint error
