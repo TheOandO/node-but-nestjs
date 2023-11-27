@@ -5,15 +5,17 @@ import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { JoiValidationPipe } from '../pipes/joi-validation.pipe';
 import { createUserSchema } from '../schemas/joi-schema';
 import { JwtAuthGuard } from 'src/guards/auth.guard';
+import { MailService } from 'src/services/mail.service';
 
 @Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService, private readonly mailService:MailService) {}
 
     @Post()
     @UseGuards(JwtAuthGuard)
     @UsePipes(new JoiValidationPipe(createUserSchema))
     create(@Body() createUserDto: CreateUserDto) {
+        this.mailService.sendMailWelcomeUser(createUserDto.email, { name: createUserDto.username })
         return this.userService.create(createUserDto);
     };
 
@@ -32,12 +34,13 @@ export class UserController {
     @Put(':id')
     @UseGuards(JwtAuthGuard)
     update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+        this.mailService.sendMailUpdate(updateUserDto.email, { name: updateUserDto.username })
         return this.userService.update(id, updateUserDto);
     };
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
-    emove(@Param('id') id: string) {
+    remove(@Param('id') id: string) {
         return this.userService.remove(id);
     };
 };

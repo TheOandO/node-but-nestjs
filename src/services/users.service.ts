@@ -78,7 +78,6 @@ export class UserService {
             const hashdPass = await bcrypt.hash(password, 10);
             return this.userModel.findByIdAndUpdate(id, { username, password: hashdPass, email }, {new: true}).exec();
         };
-
         return this.userModel.findByIdAndUpdate(id, updateUserDto);
     };
 

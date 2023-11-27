@@ -81,7 +81,7 @@ export class MailService {
             to,
             subject: 'Welkum',
             context,
-            template: './confirmation'
+            template: './welcome'
         }
 
         this.mailerService.sendMail(mailOptions)
@@ -91,6 +91,47 @@ export class MailService {
         .catch((err) => {
             console.log(err);
         });
+    }
 
+    public async sendMailUpdate(to:string, context:any) {
+        await this.setTransport();
+        
+        const mailOptions = {
+            transporterName: 'gmail',
+            from: 'noreply@nestjs.com',
+            to,
+            subject: 'Your info has been updated',
+            context,
+            template: './updated'
+        }
+
+        this.mailerService.sendMail(mailOptions)
+        .then((success) => {
+            console.log(success);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
+    public async sendMailDelete(to:string, context:any) {
+        await this.setTransport();
+        
+        const mailOptions = {
+            transporterName: 'gmail',
+            from: 'noreply@nestjs.com',
+            to,
+            subject: 'Your email has been deleted',
+            context,
+            template: './deleted'
+        }
+
+        this.mailerService.sendMail(mailOptions)
+        .then((success) => {
+            console.log(success);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 }
