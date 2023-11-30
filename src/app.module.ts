@@ -29,13 +29,13 @@ import { join } from 'path';
     }),
     MailerModule.forRootAsync({
       useFactory: async (config: ConfigService) => ({
-        transport: `${config.get('TRANSPORT')}`,
+        transport: `${config.get('MAIL_TRANSPORT')}`,
         defaults: {
-          from: `"No Reply" <${config.get('EMAIL')}>`,
+          from: `"No Reply" <${config.get('EMAIL_SEND_FROM')}>`,
         },
         template: {
           dir: join(__dirname, './templates'),
-          adapter: new EjsAdapter(), // or new PugAdapter() or new EjsAdapter()
+          adapter: new EjsAdapter(),
           options: {
             strict: true,
           },

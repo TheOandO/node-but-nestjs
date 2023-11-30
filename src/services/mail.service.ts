@@ -14,13 +14,12 @@ export class MailService {
     private async setTransport() {
         const OAuth2 = google.auth.OAuth2;
         const oauth2Client = new OAuth2(
-            this.configService.get('CLIENT_ID'),
-            this.configService.get('CLIENT_SECRET'),
-            'https://developers.google.com/oauthplayground',
+            this.configService.get('GMAIL_CLIENT_ID'),
+            this.configService.get('GMAIL_CLIENT_SECRET'),
         );
     
         oauth2Client.setCredentials({
-            refresh_token: process.env.REFRESH_TOKEN,
+            refresh_token: process.env.GMAIL_REFRESH_TOKEN,
         });
     
         const accessToken: string = await new Promise((resolve, reject) => {
@@ -33,15 +32,15 @@ export class MailService {
         });
     
         const config: Options = {
-            service: 'gmail',
+            service: this.configService.get('GMAIL_SERVICE'),
             auth: {
                 type: 'OAuth2',
-                user: this.configService.get('EMAIL'),
-                clientId: this.configService.get('CLIENT_ID'),
-                clientSecret: this.configService.get('CLIENT_SECRET'),
+                user: this.configService.get('EMAIL_SEND_FROM'),
+                clientId: this.configService.get('GMAIL_CLIENT_ID'),
+                clientSecret: this.configService.get('GMAIL_CLIENT_SECRET'),
                 accessToken,
         }};
-        this.mailerService.addTransporter('gmail', config);
+        this.mailerService.addTransporter(this.configService.get('GMAIL_SERVICE'), config);
     }
 
     public async sendMailConfirm() {
@@ -51,14 +50,13 @@ export class MailService {
         await this.setTransport();
         this.mailerService
             .sendMail({
-                transporterName: 'gmail',
                 to: 'dummy-reciever@gmail.com',
-                from: this.configService.get('EMAIL'), // sender address
+                from: this.configService.get('EMAIL_SEND_FROM'), // sender address
                 subject: 'Verfication Code', // Subject line
                 context: {
                     code: getRndInteger(111111, 999999)
                 },
-                template: './confirmation'
+                template: './confirmation.ejs'
             })
             .then((success) => {
                 console.log(success);
@@ -72,12 +70,11 @@ export class MailService {
         await this.setTransport();
         
         const mailOptions = {
-            transporterName: 'gmail',
-            from: this.configService.get('EMAIL'),
+            from: this.configService.get('EMAIL_SEND_FROM'),
             to,
             subject: 'Welkum',
             context,
-            template: './welcome'
+            template: './welcome.ejs'
         }
 
         this.mailerService.sendMail(mailOptions)
@@ -93,12 +90,11 @@ export class MailService {
         await this.setTransport();
         
         const mailOptions = {
-            transporterName: 'gmail',
-            from: this.configService.get('EMAIL'),
+            from: this.configService.get('EMAIL_SEND_FROM'),
             to,
             subject: 'Your info has been updated',
             context,
-            template: './updated'
+            template: './updated.ejs'
         }
 
         this.mailerService.sendMail(mailOptions)
@@ -114,12 +110,11 @@ export class MailService {
         await this.setTransport();
         
         const mailOptions = {
-            transporterName: 'gmail',
-            from: this.configService.get('EMAIL'),
+            from: this.configService.get('EMAIL_SEND_FROM'),
             to,
             subject: 'Your email has been deleted',
             context,
-            template: './deleted'
+            template: './deleted.ejs'
         }
 
         this.mailerService.sendMail(mailOptions)
@@ -129,5 +124,11 @@ export class MailService {
         .catch((err) => {
             console.log(err);
         });
+    }
+
+    public async sendMail(mailOptions: Options) {
+        mailOptions = {
+            from: this.configService.get('EMAIL_SEND_FROM'),
+        }
     }
 }
