@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MailerService } from '@nestjs-modules/mailer';
+import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
 import { google } from 'googleapis';
 import { Options } from 'nodemailer/lib/smtp-transport';
-
+import { MailDto } from '../dto/mail.dto'
+import { SentMessageInfo } from 'nodemailer';
 @Injectable()
 export class MailService {
     constructor(
@@ -43,92 +44,46 @@ export class MailService {
         this.mailerService.addTransporter(this.configService.get('GMAIL_SERVICE'), config);
     }
 
-    public async sendMailConfirm() {
-        function getRndInteger(min:number, max:number) {
-            return Math.floor(Math.random() * (max - min + 1) ) + min;
+    public async userMailFrame(mailDto: MailDto): Promise<SentMessageInfo> {
+        await this.setTransport()
+        const mailOptions: ISendMailOptions & { context: Record<string, any> } & { template: string } = {
+            from: this.configService.get('EMAIL_SEND_FROM'),
+            to: mailDto.to,
+            subject: mailDto.subject,
+            context: mailDto.context,
+            template: mailDto.template
         }
-        await this.setTransport();
-        this.mailerService
-            .sendMail({
-                to: 'dummy-reciever@gmail.com',
-                from: this.configService.get('EMAIL_SEND_FROM'), // sender address
-                subject: 'Verfication Code', // Subject line
-                context: {
-                    code: getRndInteger(111111, 999999)
-                },
-                template: './confirmation.ejs'
-            })
-            .then((success) => {
-                console.log(success);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+
+        return this.mailerService.sendMail(mailOptions)
     }
 
-    public async sendMailWelcomeUser(to:string, context:any) {
-        await this.setTransport();
-        
-        const mailOptions = {
-            from: this.configService.get('EMAIL_SEND_FROM'),
-            to,
-            subject: 'Welkum',
-            context,
-            template: './welcome.ejs'
+    public async sendUserMail(email: string, operation: string): Promise<SentMessageInfo> {
+        let subject: string
+        let template: string
+        switch (operation) {
+            case 'create':
+                subject = 'Welcome to Your App';
+                template = 'welcome.ejs'; 
+                break;
+            case 'update':
+                subject = 'Profile Updated';
+                template = 'updated.ejs'; 
+                break;
+            case 'delete':
+                subject = 'Account Deleted';
+                template = 'deleted.ejs'; 
+                break;
+            default:
+                throw new Error('Invalid operation');
         }
-
-        this.mailerService.sendMail(mailOptions)
-        .then((success) => {
-            console.log(success);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
-
-    public async sendMailUpdate(to:string, context:any) {
-        await this.setTransport();
-        
-        const mailOptions = {
-            from: this.configService.get('EMAIL_SEND_FROM'),
-            to,
-            subject: 'Your info has been updated',
-            context,
-            template: './updated.ejs'
-        }
-
-        this.mailerService.sendMail(mailOptions)
-        .then((success) => {
-            console.log(success);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
-
-    public async sendMailDelete(to:string, context:any) {
-        await this.setTransport();
-        
-        const mailOptions = {
-            from: this.configService.get('EMAIL_SEND_FROM'),
-            to,
-            subject: 'Your email has been deleted',
-            context,
-            template: './deleted.ejs'
-        }
-
-        this.mailerService.sendMail(mailOptions)
-        .then((success) => {
-            console.log(success);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
-
-    public async sendMail(mailOptions: Options) {
-        mailOptions = {
-            from: this.configService.get('EMAIL_SEND_FROM'),
-        }
+    
+        const mailDto: MailDto = {
+            to: email,
+            subject,
+            context: { /* Additional context data if needed */ },
+            template,
+        };
+    
+        return this.userMailFrame(mailDto);
     }
 }
