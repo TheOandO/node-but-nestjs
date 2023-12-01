@@ -16,7 +16,7 @@ import { MailModule } from "./mail.module";
         },]),
         JwtModule.register({
             secret: process.env.JWT_SECRET,
-            signOptions: { expiresIn: '60m' },
+            signOptions: { expiresIn: process.env.JWT_EXPIRES },
             }),
         forwardRef(() => AuthModule),
         MailModule

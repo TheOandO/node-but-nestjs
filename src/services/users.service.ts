@@ -94,7 +94,7 @@ export class UserService {
      * @returns {Object} user 
      */
     async remove(id: string) {
-        const user = await this.userModel.findById(id)
+        const user = await this.findOne(id)
         if (!user) {
             throw new Error('User not found');
         }

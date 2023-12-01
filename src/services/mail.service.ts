@@ -33,7 +33,7 @@ export class MailService {
         });
     
         const config: Options = {
-            service: this.configService.get('GMAIL_SERVICE'),
+            service: this.configService.get('MAIL_SERVICE_GMAIL'),
             auth: {
                 type: 'OAuth2',
                 user: this.configService.get('EMAIL_SEND_FROM'),
@@ -41,7 +41,7 @@ export class MailService {
                 clientSecret: this.configService.get('GMAIL_CLIENT_SECRET'),
                 accessToken,
         }};
-        this.mailerService.addTransporter(this.configService.get('GMAIL_SERVICE'), config);
+        this.mailerService.addTransporter(this.configService.get('MAIL_SERVICE_GMAIL'), config);
     }
 
     public async userMailFrame(mailDto: MailDto): Promise<SentMessageInfo> {
