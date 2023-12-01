@@ -69,7 +69,7 @@ export class UserService {
      * @returns {Object} user
      */
     async update(id: string, updateUserDto: UpdateUserDto) {
-        const user = await this.userModel.findById(id)
+        const user = await this.findOne(id)
         if (!user) {
             throw new Error('User not found');
         }
