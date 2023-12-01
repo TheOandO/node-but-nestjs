@@ -20,7 +20,7 @@ export class MailService {
         );
     
         oauth2Client.setCredentials({
-            refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+            refresh_token: this.configService.get('GMAIL_REFRESH_TOKEN'),
         });
     
         const accessToken: string = await new Promise((resolve, reject) => {
@@ -40,7 +40,8 @@ export class MailService {
                 clientId: this.configService.get('GMAIL_CLIENT_ID'),
                 clientSecret: this.configService.get('GMAIL_CLIENT_SECRET'),
                 accessToken,
-        }};
+            }
+        };
         this.mailerService.addTransporter(this.configService.get('MAIL_SERVICE_GMAIL'), config);
     }
 
