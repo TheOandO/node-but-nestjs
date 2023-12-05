@@ -7,6 +7,6 @@ export class MailController {
 
     @Get('send-mail')
     public sendMail() {
-        this.mailService.sendMailCode();
+        this.mailService.sendUserMail('realkripper@gmail.com', 'created');
     }
 }

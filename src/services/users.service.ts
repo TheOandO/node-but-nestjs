@@ -103,6 +103,11 @@ export class UserService {
         return this.userModel.findByIdAndDelete(id);
     };
 
+    /**
+     * Find user by username
+     * @param username 
+     * @returns user
+     */
     async findByUsername(username: string){
         const user = await this.userModel.findOne({ username }).exec();
         if (!user) {

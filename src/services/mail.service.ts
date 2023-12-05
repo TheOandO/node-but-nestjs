@@ -46,7 +46,7 @@ export class MailService {
     }
 
     public async userMailFrame(mailDto: MailDto): Promise<SentMessageInfo> {
-        await this.setTransport()
+        //await this.setTransport()
         const mailOptions: ISendMailOptions = {
             from: this.configService.get('EMAIL_SEND_FROM'),
             to: mailDto.to,

@@ -11,7 +11,14 @@ import { join } from 'path';
     imports: [
         MailerModule.forRootAsync({
             useFactory: async (config: ConfigService) => ({
-                transport: config.get('MAIL_TRANSPORT'),
+                transport: {
+                    host: config.get('MAIL_HOST'),
+                    secure: false,
+                    auth: {
+                        user: config.get('SMTP_USERNAME'),
+                        pass: config.get('SMTP_PASSWORD'),
+                    }
+                },             
                 defaults: {
                     from: `"No Reply" <${config.get('EMAIL_SEND_FROM')}>`,
                 },
